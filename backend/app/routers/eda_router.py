@@ -3,12 +3,17 @@ import os
 import tempfile
 from app.services.eda import EDAService, OutlierDetector
 from app.utils.file_handler import load_csv
+import pandas as pd
+import numpy as np
+from app.session_manager import get_session_path, create_session
+from charset_normalizer import from_path
+import uuid
 
 router = APIRouter()
 
 @router.post("/analyze")
 async def analyze_dataset(
-    file: UploadFile = File(...),
+    session_id:str,
     include_outliers: bool = Query(True, description="Include outlier detection analysis"),
     include_visualizations: bool = Query(True, description="Include plots and visualizations"),
     zscore_threshold: float = Query(3.0, description="Z-score threshold for outlier detection"),
@@ -34,10 +39,26 @@ async def analyze_dataset(
     Returns:
         Complete EDA report with all analyses and visualizations (plots as base64 PNG images)
     """
-    # Validate file type
-    if not file.filename.endswith('.csv'):
-        raise HTTPException(status_code=400, detail="File must be a CSV file")
-    
+    # get file from the session
+    session_path = get_session_path(session_id)
+    csv_path = os.path.join(session_path, "dataset.csv")
+    excel_path = os.path.join(session_path, "dataset.xlsx")
+
+    # Load dataset based on file type
+    if os.path.exists(csv_path):
+        # Auto-detect encoding for CSV
+        try:
+            df = pd.read_csv(csv_path, encoding="utf-8")
+        except UnicodeDecodeError:
+            detected = from_path(csv_path).best()
+            encoding = detected.encoding if detected else "latin-1"
+            df = pd.read_csv(csv_path, encoding=encoding)
+
+    elif os.path.exists(excel_path):
+        df = pd.read_excel(excel_path)
+
+    else:
+        raise HTTPException(404, "No dataset found for this session")
     # Validate parameters
     if not 0 < test_size < 1:
         raise HTTPException(status_code=400, detail="test_size must be between 0 and 1")
@@ -45,20 +66,9 @@ async def analyze_dataset(
     if zscore_threshold <= 0:
         raise HTTPException(status_code=400, detail="zscore_threshold must be positive")
     
-    # Save uploaded file temporarily
-    with tempfile.NamedTemporaryFile(delete=False, suffix='.csv') as tmp_file:
-        contents = await file.read()
-        tmp_file.write(contents)
-        tmp_path = tmp_file.name
     
     try:
-        # Load the CSV
-        df = load_csv(tmp_path)
-        
-        # Validate that we have data
-        if df.empty:
-            raise HTTPException(status_code=400, detail="Uploaded CSV file is empty")
-        
+          
         # Generate comprehensive EDA report with all analyses and visualizations
         report = EDAService.generate_eda_report(
             df, 
@@ -70,14 +80,8 @@ async def analyze_dataset(
         
         return {
             "status": "success",
-            "filename": file.filename,
             "data": report
         }
     
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error analyzing dataset: {str(e)}")
-    
-    finally:
-        # Clean up temporary file
-        if os.path.exists(tmp_path):
-            os.remove(tmp_path)
