@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from typing import Dict, Any, List
 from scipy import stats
-from app.utils.plot_generator import PlotGenerator
+from app.utils.data_generator import DataGenerator
 
 
 class OutlierDetector:
@@ -35,7 +35,7 @@ class OutlierDetector:
         upper_bound = Q3 + 1.5 * IQR
         
         outlier_mask = (series_clean < lower_bound) | (series_clean > upper_bound)
-        outlier_indices = series_clean[outlier_mask].index.tolist()
+        # outlier_indices = series_clean[outlier_mask].index.tolist()
         outlier_values = series_clean[outlier_mask].tolist()
         outlier_count = outlier_mask.sum()
         outlier_percent = (outlier_count / len(series_clean)) * 100 if len(series_clean) > 0 else 0
@@ -46,7 +46,7 @@ class OutlierDetector:
             "outlier_percent": round(outlier_percent, 2),
             "lower_bound": float(lower_bound),
             "upper_bound": float(upper_bound),
-            "outlier_indices": outlier_indices[:100],  # Limit to first 100
+            # "outlier_indices": outlier_indices[:100],  # Limit to first 100
             "outlier_values": [float(v) for v in outlier_values[:100]]
         }
     
@@ -75,7 +75,7 @@ class OutlierDetector:
         z_scores = np.abs(stats.zscore(series_clean))
         outlier_mask = z_scores > threshold
         
-        outlier_indices = series_clean[outlier_mask].index.tolist()
+        # outlier_indices = series_clean[outlier_mask].index.tolist() # Prolly not required
         outlier_values = series_clean[outlier_mask].tolist()
         outlier_count = outlier_mask.sum()
         outlier_percent = (outlier_count / len(series_clean)) * 100 if len(series_clean) > 0 else 0
@@ -85,7 +85,7 @@ class OutlierDetector:
             "threshold": threshold,
             "outlier_count": int(outlier_count),
             "outlier_percent": round(outlier_percent, 2),
-            "outlier_indices": outlier_indices[:100],  # Limit to first 100
+            # "outlier_indices": outlier_indices[:100],  # Limit to first 100 # Prolly not required
             "outlier_values": [float(v) for v in outlier_values[:100]]
         }
     
@@ -161,16 +161,16 @@ class EDAService:
                            zscore_threshold: float = 3.0,
                            test_size: float = 0.2) -> Dict[str, Any]:
         """
-        Generate comprehensive EDA report with all analyses and visualizations.
+        Generate comprehensive EDA report with raw data for frontend visualization.
         
         Parameters:
             - include_outliers: Whether to include outlier detection
-            - include_visualizations: Whether to generate plots (as base64 images)
+            - include_visualizations: Whether to include visualization data
             - zscore_threshold: Z-score threshold for outlier detection (default 3.0)
             - test_size: Proportion of data for test split (default 0.2)
         
         Returns:
-            Complete EDA report with missing values, outliers, correlations, and visualizations
+            Complete EDA report with missing values, outliers, and visualization data
         """
         report = {
             "dataset_info": {
@@ -190,11 +190,11 @@ class EDAService:
         if include_outliers:
             report["outliers"] = OutlierDetector.analyze(df, zscore_threshold=zscore_threshold)
         
-        # Add visualizations and advanced statistics
+        # Add visualization data (raw data for frontend to render)
         if include_visualizations:
-            report["correlation_analysis"] = PlotGenerator.generate_correlation_matrix(df)
-            report["distribution_analysis"] = PlotGenerator.generate_distribution_plots(df)
-            report["categorical_analysis"] = PlotGenerator.generate_categorical_plots(df)
-            report["train_test_split"] = PlotGenerator.generate_train_test_split_summary(df, test_size=test_size)
+            report["correlation_analysis"] = DataGenerator.generate_correlation_matrix(df)
+            report["distribution_analysis"] = DataGenerator.generate_distribution_data(df)
+            report["categorical_analysis"] = DataGenerator.generate_categorical_data(df)
+            report["train_test_split"] = DataGenerator.generate_train_test_split_data(df, test_size=test_size)
         
         return report
