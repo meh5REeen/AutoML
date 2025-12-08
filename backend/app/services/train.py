@@ -157,13 +157,13 @@ def tune_models(X, y, test_size: float, random_state=42, selected_models=None):
             cm_df = pd.DataFrame(cm, index=range(1, len(cm)+1), columns=range(1, len(cm)+1))
 
             roc = roc_auc(y_test,best_model,X_test)
-            results_tuned={}
             if roc is not None:
                 results_tuned[model_name + " (Tuned)"] = {
                     "accuracy": accuracy_score(y_test, y_pred),
                     "precision": precision_score(y_test, y_pred, average='weighted', zero_division=0),
                     "recall": recall_score(y_test, y_pred, average='weighted', zero_division=0),
-                    "f1_score": f1_score(y_test, y_pred, average='weighted', zero_division=0),                   "roc_auc": roc,
+                    "f1_score": f1_score(y_test, y_pred, average='weighted', zero_division=0),                   
+                    "roc_auc": roc,
                     "confusion_matrix": cm_df.values.tolist(),
                     "training_time": tuning_time,
                     "best_params": best_params
