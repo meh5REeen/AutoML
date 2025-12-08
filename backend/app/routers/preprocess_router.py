@@ -12,9 +12,6 @@ router = APIRouter()
 def save_clean_dataframe(df,session_id,original_file_name):
     folder_path = get_session_path(session_id)
     os.makedirs(folder_path, exist_ok=True)
-
-   
-
     
     _,ext = os.path.splitext(original_file_name)
     ext = ext.lower()
@@ -37,7 +34,14 @@ def save_clean_dataframe(df,session_id,original_file_name):
 
 
 @router.post("/preprocess")
-def preprocess_data(session_id:str,missing_strategy,outlier_method,scaling_method,encoding_method,test_size:float,target,impute_constant=None):
+def preprocess_data(session_id: str,
+                    missing_strategy: str = "Mean",
+                    outlier_method: str = "Remove",
+                    scaling_method: str = "Standard",
+                    encoding_method: str = "OneHot",
+                    test_size: float = 0.2,
+                    target: str = None,
+                    impute_constant=None):
     session_path = get_session_path(session_id)
     csv_path = os.path.join(session_path, "dataset.csv")
     excel_path = os.path.join(session_path, "dataset.xlsx")
