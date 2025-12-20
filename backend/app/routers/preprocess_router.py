@@ -3,8 +3,11 @@ from app.session_manager import get_session_path
 import os
 from charset_normalizer import from_path
 import pandas as pd
-from app.services.preprocess import handle_missing_values,handle_outliers,splitting_data,scale_numerical_features,encode_categorical_variables
+from app.services.preprocess import handle_missing_values,handle_outliers,splitting_data,scale_numerical_features,encode_categorical_variables, remove_duplicates
 from fastapi.encoders import jsonable_encoder
+from app.services.issues import IssueDetector
+import json
+from datetime import datetime
 
 
 router = APIRouter()
@@ -28,6 +31,46 @@ def save_clean_dataframe(df,session_id,original_file_name):
         raise ValueError("Unsupported file type for saving cleaned data")
 
     return output_path
+
+
+def save_preprocessing_metadata(session_id, df_original, df_processed, preprocessing_params):
+    """Save preprocessing metadata and detected issues"""
+    folder_path = get_session_path(session_id)
+    
+    # Detect issues
+    issue_detector = IssueDetector()
+    issues_report = issue_detector.detect_all_issues(df_original, df_processed, preprocessing_params)
+    
+    # Create metadata
+    metadata = {
+        "timestamp": datetime.now().isoformat(),
+        "parameters": preprocessing_params,
+        "data_quality_before": {
+            "total_rows": df_original.shape[0],
+            "total_columns": df_original.shape[1],
+            "missing_values": int(df_original.isnull().sum().sum()),
+            "missing_percent": round((df_original.isnull().sum().sum() / (df_original.shape[0] * df_original.shape[1])) * 100, 2),
+            "duplicate_rows": int(df_original.duplicated().sum()),
+            "columns": list(df_original.columns)
+        },
+        "data_quality_after": {
+            "total_rows": df_processed.shape[0],
+            "total_columns": df_processed.shape[1],
+            "missing_values": int(df_processed.isnull().sum().sum()),
+            "missing_percent": round((df_processed.isnull().sum().sum() / (df_processed.shape[0] * df_processed.shape[1])) * 100, 2),
+            "duplicate_rows": int(df_processed.duplicated().sum()),
+            "columns": list(df_processed.columns)
+        },
+        "rows_removed": df_original.shape[0] - df_processed.shape[0],
+        "issues_detected": issues_report
+    }
+    
+    # Save metadata JSON
+    metadata_path = os.path.join(folder_path, "preprocessing_metadata.json")
+    with open(metadata_path, 'w') as f:
+        json.dump(metadata, f, indent=2, default=str)
+    
+    return metadata_path
 
 
 
@@ -64,14 +107,15 @@ def preprocess_data(session_id: str,
     else:
         raise HTTPException(404, "No dataset found for this session")
 
-
     df = handle_missing_values(strategy=missing_strategy,df=df,fill_value=impute_constant)
     df = handle_outliers(df=df,method=outlier_method)
     
     target_series = df[target]  # store original target
+    df_before_encoding = df.copy()  # Keep copy for issue detection
+    
+    df = remove_duplicates(df=df)
     df = df.drop(columns=[target]) 
     df = encode_categorical_variables(df=df,encoding_type=encoding_method)
-
 
     df = scale_numerical_features(df=df,scaling_type=scaling_method)
     df[target] = target_series
@@ -79,6 +123,16 @@ def preprocess_data(session_id: str,
 
     cleaned_data_path = save_clean_dataframe(df=df,session_id=session_id,original_file_name=original_file_name)
     
+    # Save preprocessing metadata
+    preprocessing_params = {
+        "missing_strategy": missing_strategy,
+        "outlier_method": outlier_method,
+        "scaling_method": scaling_method,
+        "encoding_method": encoding_method,
+        "test_size": test_size,
+        "impute_constant": impute_constant
+    }
+    metadata_path = save_preprocessing_metadata(session_id, df_before_encoding, df, preprocessing_params)
 
     return jsonable_encoder({
         "Splitted_data": {
@@ -87,5 +141,6 @@ def preprocess_data(session_id: str,
             "y_train": y_train.tolist(),
             "y_test": y_test.tolist()
         },
-        "cleaned_path": cleaned_data_path
+        "cleaned_path": cleaned_data_path,
+        "metadata_path": metadata_path
     })

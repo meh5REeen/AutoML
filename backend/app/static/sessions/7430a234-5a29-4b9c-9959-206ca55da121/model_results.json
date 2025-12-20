@@ -1,0 +1,347 @@
+{
+  "timestamp": "2025-12-20T10:19:03.455091",
+  "hyperparameters": {
+    "test_size": 0.2,
+    "random_state": 42,
+    "optimize": true
+  },
+  "models": [
+    {
+      "name": "Logistic Regression",
+      "metrics": {
+        "accuracy": 0.7951219512195122,
+        "precision": 0.8023441707936719,
+        "recall": 0.7951219512195122,
+        "f1_score": 0.7937867291266357,
+        "roc_auc": 0.8790215115172283,
+        "confusion_matrix": [
+          [
+            73,
+            29
+          ],
+          [
+            13,
+            90
+          ]
+        ],
+        "training_time": 0.011000871658325195
+      }
+    },
+    {
+      "name": "K-Neighbors Classifier",
+      "metrics": {
+        "accuracy": 0.8341463414634146,
+        "precision": 0.83869918699187,
+        "recall": 0.8341463414634146,
+        "f1_score": 0.8335281942268965,
+        "roc_auc": 0.9508376166000381,
+        "confusion_matrix": [
+          [
+            79,
+            23
+          ],
+          [
+            11,
+            92
+          ]
+        ],
+        "training_time": 0.005994081497192383
+      }
+    },
+    {
+      "name": "Decision Tree Classifier",
+      "metrics": {
+        "accuracy": 0.9853658536585366,
+        "precision": 0.9857839721254356,
+        "recall": 0.9853658536585366,
+        "f1_score": 0.9853637641109759,
+        "roc_auc": 0.9854368932038835,
+        "confusion_matrix": [
+          [
+            102,
+            0
+          ],
+          [
+            3,
+            100
+          ]
+        ],
+        "training_time": 0.006005048751831055
+      }
+    },
+    {
+      "name": "Gaussian Naive Bayes",
+      "metrics": {
+        "accuracy": 0.8,
+        "precision": 0.8105076041872408,
+        "recall": 0.8,
+        "f1_score": 0.7981741741741742,
+        "roc_auc": 0.8705501618122977,
+        "confusion_matrix": [
+          [
+            72,
+            30
+          ],
+          [
+            11,
+            92
+          ]
+        ],
+        "training_time": 0.002980947494506836
+      }
+    },
+    {
+      "name": "Random Forest",
+      "metrics": {
+        "accuracy": 0.9853658536585366,
+        "precision": 0.9857839721254356,
+        "recall": 0.9853658536585366,
+        "f1_score": 0.9853637641109759,
+        "roc_auc": 1.0,
+        "confusion_matrix": [
+          [
+            102,
+            0
+          ],
+          [
+            3,
+            100
+          ]
+        ],
+        "training_time": 0.3558011054992676
+      }
+    },
+    {
+      "name": "Support Vector Machine",
+      "metrics": {
+        "accuracy": 0.8878048780487805,
+        "precision": 0.8922686641556987,
+        "recall": 0.8878048780487805,
+        "f1_score": 0.8874512628987706,
+        "roc_auc": 0.9603083952027414,
+        "confusion_matrix": [
+          [
+            85,
+            17
+          ],
+          [
+            6,
+            97
+          ]
+        ],
+        "training_time": 0.22613763809204102
+      }
+    },
+    {
+      "name": "Decision Tree Rule-based",
+      "metrics": {
+        "accuracy": 0.8439024390243902,
+        "precision": 0.8603756097560976,
+        "recall": 0.8439024390243902,
+        "f1_score": 0.8419989937319847,
+        "roc_auc": 0.9088616028935848,
+        "confusion_matrix": [
+          [
+            75,
+            27
+          ],
+          [
+            5,
+            98
+          ]
+        ],
+        "training_time": 0.00598907470703125
+      }
+    },
+    {
+      "name": "Logistic Regression (Tuned)",
+      "metrics": {
+        "accuracy": 0.7951219512195122,
+        "precision": 0.8023441707936719,
+        "recall": 0.7951219512195122,
+        "f1_score": 0.7937867291266357,
+        "roc_auc": 0.8790215115172283,
+        "confusion_matrix": [
+          [
+            73,
+            29
+          ],
+          [
+            13,
+            90
+          ]
+        ],
+        "training_time": 26.84100914001465,
+        "best_params": {
+          "C": 1,
+          "max_iter": 100,
+          "penalty": "l2",
+          "solver": "lbfgs"
+        }
+      }
+    },
+    {
+      "name": "K-Neighbors Classifier (Tuned)",
+      "metrics": {
+        "accuracy": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "roc_auc": 1.0,
+        "confusion_matrix": [
+          [
+            102,
+            0
+          ],
+          [
+            0,
+            103
+          ]
+        ],
+        "training_time": 1.5126826763153076,
+        "best_params": {
+          "metric": "manhattan",
+          "n_neighbors": 5,
+          "weights": "distance"
+        }
+      }
+    },
+    {
+      "name": "Decision Tree Classifier (Tuned)",
+      "metrics": {
+        "accuracy": 0.9853658536585366,
+        "precision": 0.9857839721254356,
+        "recall": 0.9853658536585366,
+        "f1_score": 0.9853637641109759,
+        "roc_auc": 0.9854368932038835,
+        "confusion_matrix": [
+          [
+            102,
+            0
+          ],
+          [
+            3,
+            100
+          ]
+        ],
+        "training_time": 2.3180298805236816,
+        "best_params": {
+          "criterion": "gini",
+          "max_depth": 10,
+          "min_samples_leaf": 1,
+          "min_samples_split": 2
+        }
+      }
+    },
+    {
+      "name": "Gaussian Naive Bayes (Tuned)",
+      "metrics": {
+        "accuracy": 0.8,
+        "precision": 0.8105076041872408,
+        "recall": 0.8,
+        "f1_score": 0.7981741741741742,
+        "roc_auc": 0.8715971825623453,
+        "confusion_matrix": [
+          [
+            72,
+            30
+          ],
+          [
+            11,
+            92
+          ]
+        ],
+        "training_time": 0.28223299980163574,
+        "best_params": {
+          "var_smoothing": 0.012915496650148827
+        }
+      }
+    },
+    {
+      "name": "Random Forest (Tuned)",
+      "metrics": {
+        "accuracy": 0.9853658536585366,
+        "precision": 0.9857839721254356,
+        "recall": 0.9853658536585366,
+        "f1_score": 0.9853637641109759,
+        "roc_auc": 1.0,
+        "confusion_matrix": [
+          [
+            102,
+            0
+          ],
+          [
+            3,
+            100
+          ]
+        ],
+        "training_time": 153.91115498542786,
+        "best_params": {
+          "criterion": "gini",
+          "max_depth": null,
+          "min_samples_leaf": 1,
+          "min_samples_split": 2,
+          "n_estimators": 50
+        }
+      }
+    },
+    {
+      "name": "Support Vector Machine (Tuned)",
+      "metrics": {
+        "accuracy": 0.9853658536585366,
+        "precision": 0.9857839721254356,
+        "recall": 0.9853658536585366,
+        "f1_score": 0.9853637641109759,
+        "roc_auc": 0.979154768703598,
+        "confusion_matrix": [
+          [
+            102,
+            0
+          ],
+          [
+            3,
+            100
+          ]
+        ],
+        "training_time": 18.651367902755737,
+        "best_params": {
+          "C": 100,
+          "gamma": "scale",
+          "kernel": "rbf"
+        }
+      }
+    },
+    {
+      "name": "Decision Tree Rule-based (Tuned)",
+      "metrics": {
+        "accuracy": 0.9853658536585366,
+        "precision": 0.9857839721254356,
+        "recall": 0.9853658536585366,
+        "f1_score": 0.9853637641109759,
+        "roc_auc": 0.9854368932038835,
+        "confusion_matrix": [
+          [
+            102,
+            0
+          ],
+          [
+            3,
+            100
+          ]
+        ],
+        "training_time": 2.172586441040039,
+        "best_params": {
+          "criterion": "gini",
+          "max_depth": 10,
+          "min_samples_leaf": 1,
+          "min_samples_split": 2
+        }
+      }
+    }
+  ],
+  "best_model": {
+    "name": "K-Neighbors Classifier (Tuned)",
+    "reason": "Best F1 score: 1.0000",
+    "f1_score": 1.0
+  }
+}

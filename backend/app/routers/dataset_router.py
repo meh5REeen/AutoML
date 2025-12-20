@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, UploadFile
+from fastapi import APIRouter, HTTPException, UploadFile, File, Form
 import os
 import uuid
 import pandas as pd
@@ -24,7 +24,10 @@ def ensure_valid_session_id(session_id: str | None) -> str:
         return session_id
 
 @router.post('/upload')
-async def upload_dataset(file: UploadFile, session_id: str):
+async def upload_dataset(
+    file: UploadFile = File(...),
+    session_id: str | None = Form(None)
+):
     """
     Upload a dataset file (CSV, XLS, XLSX).
     """

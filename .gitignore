@@ -210,3 +210,6 @@ __marimo__/
 .csv
 .xlsx
 
+# Session Storage
+app/static/sessions
+

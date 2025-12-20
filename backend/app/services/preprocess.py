@@ -1,6 +1,7 @@
 import pandas as pd
 from sklearn.preprocessing import OrdinalEncoder, StandardScaler, MinMaxScaler
 from sklearn.model_selection import train_test_split
+
 def handle_missing_values(df,strategy="None",fill_value=None):
     for col in df.columns:
         if df[col].isnull().sum() > 0 :
@@ -58,4 +59,5 @@ def splitting_data(df,target,test_size=0.2):
     X_train,X_test,y_train,y_test = train_test_split(X,y,test_size=test_size,random_state=42)
     return X_train[:5],X_test[:5],y_train[:5],y_test[:5]
 
-
+def remove_duplicates(df):
+    return df.drop_duplicates()

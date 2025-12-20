@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='UTF-8'>
+  <title>AutoML Final Report</title>
+  <style>
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: #333;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f5f5f5;
+}
+h1 { color: #1976d2; border-bottom: 3px solid #1976d2; padding-bottom: 10px; }
+h2 { color: #1976d2; margin-top: 30px; }
+h3 { color: #424242; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 15px 0;
+  background-color: white;
+}
+th, td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+}
+th { background-color: #1976d2; color: white; }
+tr:nth-child(even) { background-color: #f9f9f9; }
+tr:hover { background-color: #f0f0f0; }
+ul { margin: 10px 0; }
+li { margin: 5px 0; }
+code { background-color: #f4f4f4; padding: 2px 6px; border-radius: 3px; }
+b { color: #1976d2; }
+  </style>
+</head>
+<body>
+<h1>AutoML Final Report</h1>
+<p>Generated: 2025-12-20 10:45:12</p>
+<h2>1. Dataset Overview</h2>
+<p><b>Original Dataset:</b></p>
+<ul>
+<li>Rows: 1025</li>
+<li>Columns: 14</li>
+<li>Missing Values: 0 (0.00%)</li>
+<li>Duplicate Rows: 723</li>
+</ul>
+<p><b>Column Summary:</b></p>
+<ul>
+<li>Numeric Columns (14): age, sex, cp, trestbps, chol, fbs, restecg, thalach, exang, oldpeak, slope, ca, thal, target</li>
+<li>Categorical Columns (0): </li>
+</ul>
+<p><b>After Preprocessing:</b></p>
+<ul>
+<li>Rows: 1025</li>
+<li>Columns: 14</li>
+<li>Rows Removed: 0</li>
+</ul>
+<h2>2. EDA Findings</h2>
+<p><b>Numeric Features Statistics:</b></p>
+<table>
+<tr><td>Feature</td><td>Mean</td><td>Median</td><td>Std</td><td>Min</td><td>Max</td></tr>
+<tr><td>age</td><td>54.43</td><td>56.00</td><td>9.07</td><td>29.00</td><td>77.00</td></tr>
+<tr><td>sex</td><td>0.70</td><td>1.00</td><td>0.46</td><td>0.00</td><td>1.00</td></tr>
+<tr><td>cp</td><td>0.94</td><td>1.00</td><td>1.03</td><td>0.00</td><td>3.00</td></tr>
+<tr><td>trestbps</td><td>131.61</td><td>130.00</td><td>17.52</td><td>94.00</td><td>200.00</td></tr>
+<tr><td>chol</td><td>246.00</td><td>240.00</td><td>51.59</td><td>126.00</td><td>564.00</td></tr>
+<tr><td>fbs</td><td>0.15</td><td>0.00</td><td>0.36</td><td>0.00</td><td>1.00</td></tr>
+<tr><td>restecg</td><td>0.53</td><td>1.00</td><td>0.53</td><td>0.00</td><td>2.00</td></tr>
+<tr><td>thalach</td><td>149.11</td><td>152.00</td><td>23.01</td><td>71.00</td><td>202.00</td></tr>
+<tr><td>exang</td><td>0.34</td><td>0.00</td><td>0.47</td><td>0.00</td><td>1.00</td></tr>
+<tr><td>oldpeak</td><td>1.07</td><td>0.80</td><td>1.18</td><td>0.00</td><td>6.20</td></tr>
+<tr><td>slope</td><td>1.39</td><td>1.00</td><td>0.62</td><td>0.00</td><td>2.00</td></tr>
+<tr><td>ca</td><td>0.75</td><td>0.00</td><td>1.03</td><td>0.00</td><td>4.00</td></tr>
+<tr><td>thal</td><td>2.32</td><td>2.00</td><td>0.62</td><td>0.00</td><td>3.00</td></tr>
+<tr><td>target</td><td>0.51</td><td>1.00</td><td>0.50</td><td>0.00</td><td>1.00</td></tr>
+</table>
+<h2>3. Data Quality Issues Detected</h2>
+<p><b>Issues Summary:</b></p>
+<ul>
+<li>High Severity: 3</li>
+<li>Medium Severity: 2</li>
+<li>Low Severity: 3</li>
+</ul>
+<p><b>Issues Detected:</b></p>
+<ul>
+<li>[HIGH] DUPLICATE_ROWS in 'N/A': 723 (70.54%)</li>
+<li>[MEDIUM] OUTLIERS in 'trestbps': 30 (2.93%)</li>
+<li>[MEDIUM] OUTLIERS in 'chol': 16 (1.56%)</li>
+<li>[HIGH] OUTLIERS in 'fbs': 153 (14.93%)</li>
+<li>[LOW] OUTLIERS in 'thalach': 4 (0.39%)</li>
+<li>[LOW] OUTLIERS in 'oldpeak': 7 (0.68%)</li>
+<li>[HIGH] OUTLIERS in 'ca': 87 (8.49%)</li>
+<li>[LOW] OUTLIERS in 'thal': 7 (0.68%)</li>
+</ul>
+<p><b>Recommendations:</b></p>
+<ul>
+<li>Remove duplicate rows from dataset</li>
+<li>Consider removing or capping outliers using IQR method</li>
+</ul>
+<h2>4. Preprocessing Decisions</h2>
+<p><b>Methods Applied:</b></p>
+<ul>
+<li>Missing Values Strategy: Median</li>
+<li>Outlier Handling: Remove</li>
+<li>Scaling Method: Standard</li>
+<li>Encoding Method: OneHot</li>
+<li>Test Size: 0.2</li>
+</ul>
+<p><b>Impact Summary:</b></p>
+<ul>
+<li>Rows Removed: 0</li>
+<li>Missing Values Reduced: 0 → 0</li>
+<li>Features Modified: 14 (from 14)</li>
+</ul>
+<h2>5. Model Configurations & Hyperparameters</h2>
+<p><b>Training Configuration:</b></p>
+<ul>
+<li>Test Size: 0.2</li>
+<li>Random State: 42</li>
+<li>Hyperparameter Tuning: Yes</li>
+</ul>
+<p><b>Models Trained:</b></p>
+<ul>
+<li>Logistic Regression</li>
+<li>K-Neighbors Classifier</li>
+<li>Decision Tree Classifier</li>
+<li>Gaussian Naive Bayes</li>
+<li>Random Forest</li>
+<li>Support Vector Machine</li>
+<li>Decision Tree Rule-based</li>
+<li><b>Logistic Regression (Tuned)</b> (Tuned)</li>
+</ul>
+<p>  Best Params: {'C': 1, 'max_iter': 100, 'penalty': 'l2', 'solver': 'lbfgs'}</p>
+<ul>
+<li><b>K-Neighbors Classifier (Tuned)</b> (Tuned)</li>
+</ul>
+<p>  Best Params: {'metric': 'manhattan', 'n_neighbors': 5, 'weights': 'distance'}</p>
+<ul>
+<li><b>Decision Tree Classifier (Tuned)</b> (Tuned)</li>
+</ul>
+<p>  Best Params: {'criterion': 'gini', 'max<i>depth': 10, 'min</i>samples<i>leaf': 1, 'min</i>samples_split': 2}</p>
+<ul>
+<li><b>Gaussian Naive Bayes (Tuned)</b> (Tuned)</li>
+</ul>
+<p>  Best Params: {'var_smoothing': 0.012915496650148827}</p>
+<ul>
+<li><b>Random Forest (Tuned)</b> (Tuned)</li>
+</ul>
+<p>  Best Params: {'criterion': 'gini', 'max<i>depth': None, 'min</i>samples<i>leaf': 1, 'min</i>samples<i>split': 2, 'n</i>estimators': 50}</p>
+<ul>
+<li><b>Support Vector Machine (Tuned)</b> (Tuned)</li>
+</ul>
+<p>  Best Params: {'C': 100, 'gamma': 'scale', 'kernel': 'rbf'}</p>
+<ul>
+<li><b>Decision Tree Rule-based (Tuned)</b> (Tuned)</li>
+</ul>
+<p>  Best Params: {'criterion': 'gini', 'max<i>depth': 10, 'min</i>samples<i>leaf': 1, 'min</i>samples_split': 2}</p>
+<h2>6. Model Performance Comparison</h2>
+<table>
+<tr><td>Model</td><td>Accuracy</td><td>Precision</td><td>Recall</td><td>F1-Score</td><td>Training Time</td></tr>
+<tr><td>Logistic Regression</td><td>0.7951</td><td>0.8023</td><td>0.7951</td><td>0.7938</td><td>0.01s</td></tr>
+<tr><td>K-Neighbors Classifier</td><td>0.8341</td><td>0.8387</td><td>0.8341</td><td>0.8335</td><td>0.01s</td></tr>
+<tr><td>Decision Tree Classifier</td><td>0.9854</td><td>0.9858</td><td>0.9854</td><td>0.9854</td><td>0.01s</td></tr>
+<tr><td>Gaussian Naive Bayes</td><td>0.8000</td><td>0.8105</td><td>0.8000</td><td>0.7982</td><td>0.00s</td></tr>
+<tr><td>Random Forest</td><td>0.9854</td><td>0.9858</td><td>0.9854</td><td>0.9854</td><td>0.36s</td></tr>
+<tr><td>Support Vector Machine</td><td>0.8878</td><td>0.8923</td><td>0.8878</td><td>0.8875</td><td>0.23s</td></tr>
+<tr><td>Decision Tree Rule-based</td><td>0.8439</td><td>0.8604</td><td>0.8439</td><td>0.8420</td><td>0.01s</td></tr>
+<tr><td>Logistic Regression (Tuned)</td><td>0.7951</td><td>0.8023</td><td>0.7951</td><td>0.7938</td><td>26.84s</td></tr>
+<tr><td>K-Neighbors Classifier (Tuned)</td><td>1.0000</td><td>1.0000</td><td>1.0000</td><td>1.0000</td><td>1.51s</td></tr>
+<tr><td>Decision Tree Classifier (Tuned)</td><td>0.9854</td><td>0.9858</td><td>0.9854</td><td>0.9854</td><td>2.32s</td></tr>
+<tr><td>Gaussian Naive Bayes (Tuned)</td><td>0.8000</td><td>0.8105</td><td>0.8000</td><td>0.7982</td><td>0.28s</td></tr>
+<tr><td>Random Forest (Tuned)</td><td>0.9854</td><td>0.9858</td><td>0.9854</td><td>0.9854</td><td>153.91s</td></tr>
+<tr><td>Support Vector Machine (Tuned)</td><td>0.9854</td><td>0.9858</td><td>0.9854</td><td>0.9854</td><td>18.65s</td></tr>
+<tr><td>Decision Tree Rule-based (Tuned)</td><td>0.9854</td><td>0.9858</td><td>0.9854</td><td>0.9854</td><td>2.17s</td></tr>
+</table>
+<h2>7. Best Model Summary & Justification</h2>
+<p><b>Selected Model: K-Neighbors Classifier (Tuned)</b></p>
+<p><b>Reason: Best F1 score: 1.0000</b></p>
+<p><b>Performance Metrics:</b></p>
+<ul>
+<li>Accuracy: 1.0</li>
+<li>Precision: 1.0</li>
+<li>Recall: 1.0</li>
+<li>F1-Score: 1.0</li>
+<li>ROC-AUC: 1.0</li>
+<li>Training Time: 1.5126826763153076s</li>
+</ul>
+<p><b>Hyperparameters:</b></p>
+<ul>
+<li>metric: manhattan</li>
+<li>n_neighbors: 5</li>
+<li>weights: distance</li>
+</ul>
+</body>
+</html>

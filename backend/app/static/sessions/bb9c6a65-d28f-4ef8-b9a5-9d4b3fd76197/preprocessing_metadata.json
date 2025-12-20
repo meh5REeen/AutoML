@@ -1,0 +1,173 @@
+{
+  "timestamp": "2025-12-20T11:40:52.458041",
+  "parameters": {
+    "missing_strategy": "Median",
+    "outlier_method": "Remove",
+    "scaling_method": "Standard",
+    "encoding_method": "OneHot",
+    "test_size": 0.2,
+    "impute_constant": "unknown"
+  },
+  "data_quality_before": {
+    "total_rows": 1025,
+    "total_columns": 14,
+    "missing_values": 0,
+    "missing_percent": 0.0,
+    "duplicate_rows": 723,
+    "columns": [
+      "age",
+      "sex",
+      "cp",
+      "trestbps",
+      "chol",
+      "fbs",
+      "restecg",
+      "thalach",
+      "exang",
+      "oldpeak",
+      "slope",
+      "ca",
+      "thal",
+      "target"
+    ]
+  },
+  "data_quality_after": {
+    "total_rows": 302,
+    "total_columns": 14,
+    "missing_values": 0,
+    "missing_percent": 0.0,
+    "duplicate_rows": 0,
+    "columns": [
+      "age",
+      "sex",
+      "cp",
+      "trestbps",
+      "chol",
+      "fbs",
+      "restecg",
+      "thalach",
+      "exang",
+      "oldpeak",
+      "slope",
+      "ca",
+      "thal",
+      "target"
+    ]
+  },
+  "rows_removed": 723,
+  "issues_detected": {
+    "timestamp": "2025-12-20T11:40:52.458041",
+    "issues_count": 8,
+    "issues_detected": [
+      {
+        "type": "duplicate_rows",
+        "column": "Dataset",
+        "count": 723,
+        "percent": 70.54,
+        "severity": "high"
+      },
+      {
+        "type": "outliers",
+        "column": "trestbps",
+        "method": "IQR",
+        "count": 30,
+        "percent": 2.93,
+        "bounds": {
+          "lower": 90.0,
+          "upper": 170.0
+        },
+        "severity": "medium"
+      },
+      {
+        "type": "outliers",
+        "column": "chol",
+        "method": "IQR",
+        "count": 16,
+        "percent": 1.56,
+        "bounds": {
+          "lower": 115.0,
+          "upper": 371.0
+        },
+        "severity": "medium"
+      },
+      {
+        "type": "outliers",
+        "column": "fbs",
+        "method": "IQR",
+        "count": 153,
+        "percent": 14.93,
+        "bounds": {
+          "lower": 0.0,
+          "upper": 0.0
+        },
+        "severity": "high"
+      },
+      {
+        "type": "outliers",
+        "column": "thalach",
+        "method": "IQR",
+        "count": 4,
+        "percent": 0.39,
+        "bounds": {
+          "lower": 81.0,
+          "upper": 217.0
+        },
+        "severity": "low"
+      },
+      {
+        "type": "outliers",
+        "column": "oldpeak",
+        "method": "IQR",
+        "count": 7,
+        "percent": 0.68,
+        "bounds": {
+          "lower": -2.7,
+          "upper": 4.5
+        },
+        "severity": "low"
+      },
+      {
+        "type": "outliers",
+        "column": "ca",
+        "method": "IQR",
+        "count": 87,
+        "percent": 8.49,
+        "bounds": {
+          "lower": -1.5,
+          "upper": 2.5
+        },
+        "severity": "high"
+      },
+      {
+        "type": "outliers",
+        "column": "thal",
+        "method": "IQR",
+        "count": 7,
+        "percent": 0.68,
+        "bounds": {
+          "lower": 0.5,
+          "upper": 4.5
+        },
+        "severity": "low"
+      }
+    ],
+    "severity_summary": {
+      "high": 3,
+      "medium": 2,
+      "low": 3
+    },
+    "data_shape_before": [
+      1025,
+      14
+    ],
+    "data_shape_after": [
+      302,
+      14
+    ],
+    "rows_removed": 723,
+    "recommendations": [
+      "Remove duplicate rows from dataset",
+      "Consider removing or capping outliers using IQR method"
+    ]
+  }
+}
