@@ -1,0 +1,24 @@
+{
+  "model_name": "Gaussian Naive Bayes",
+  "feature_names": [
+    "age",
+    "sex",
+    "cp",
+    "trestbps",
+    "chol",
+    "fbs",
+    "restecg",
+    "thalach",
+    "exang",
+    "oldpeak",
+    "slope",
+    "ca",
+    "thal"
+  ],
+  "target_name": "target",
+  "class_labels": [
+    0,
+    1
+  ],
+  "timestamp": "2025-12-25T14:10:09.927424"
+}
